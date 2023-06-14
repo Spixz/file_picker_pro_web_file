@@ -38,6 +38,12 @@ class _MyAppState extends State<MyApp> {
                   allowedExtensions: Files.allowedAllExtensions,
                   onSelected: (fileData) {
                     _fileData = fileData;
+                    print(_fileData.fileName);
+                    print(_fileData.fileMimeType);
+                    print(_fileData.fromWeb);
+                    if (!_fileData.fromWeb) {
+                      print(_fileData.path);
+                    }
                     log(fileData.filePath);
                     setState(() {});
                   },

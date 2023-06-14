@@ -1,5 +1,5 @@
 name: file_picker_pro
-description: Flutter plugin for selecting files from any devices file library, and taking a new pictures with the camera.
+description: Fork of file_picker_pro from datadirr.com. The Files.filePicker now work in the browser by populating Uint8List? FileData.bytes with the selected file..
 repository: https://github.com/datadirr/file_picker_pro.git
 homepage: https://datadirr.com
 version: 1.3.0

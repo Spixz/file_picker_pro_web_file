@@ -2,6 +2,7 @@ import 'dart:developer' as dev;
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:file_picker_pro/file_data.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -412,7 +413,8 @@ class Files {
       ]}) async {
     FilePickerResult? result = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: allowedExtensions);
-    if (result != null && result.files.single.path != null) {
+
+    if (result != null && (kIsWeb || result.files.single.path != null)) {
       if (maxFileSizeInMb != null &&
           Files.mb(result.files.single.size) > maxFileSizeInMb) {
         dev.log(
@@ -425,9 +427,13 @@ class Files {
       FileData fileData = FileData(
           hasFile: true,
           fileName: result.files.single.name,
-          filePath: result.files.single.path!,
-          fileMimeType: Files.getMimeType(result.files.single.path!),
-          path: result.files.single.path!);
+          filePath: (kIsWeb) ? '' : result.files.single.path!,
+          fileMimeType: (kIsWeb)
+              ? lookupMimeType('', headerBytes: result.files.single.bytes!)!
+              : Files.getMimeType(result.files.single.path!),
+          path: (kIsWeb) ? '' : result.files.single.path!,
+          fromWeb: kIsWeb,
+          bytes: (kIsWeb) ? result.files.single.bytes : null);
       onSelected(fileData);
     } else {
       dev.log("[${Files._mcFPCForCancel}] ${Files._filePickCancel}");
